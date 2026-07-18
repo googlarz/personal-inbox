@@ -1,0 +1,41 @@
+<!--
+Starter manifest — copy this to <Inbox root>/categories.md and edit freely.
+Delete what doesn't apply, rename anything, add categories of your own.
+Full field reference: FORMAT.md
+-->
+
+## Finance
+description: Banking, invoices, receipts, subscriptions, anything with a payment obligation.
+destination: Finance/
+policy: propose-actions
+auto: true
+
+## Tax
+description: Tax authority letters, filings, annual statements needed for tax prep.
+destination: Tax/
+policy: file-only
+
+## Health
+description: Medical letters, lab results, insurance correspondence, appointment confirmations.
+destination: Health/
+policy: always-check-dates
+
+## Family
+description: School letters, permission slips, activities and correspondence for your kids.
+destination: Family/
+policy: always-check-dates
+
+## Work
+description: Employment paperwork, contracts, HR correspondence.
+destination: Work/
+policy: propose-actions
+
+## Home
+description: Lease, utilities, building management, household insurance and maintenance.
+destination: Home/
+policy: propose-actions
+
+## Mobility
+description: Vehicle, public transit, and travel bookings and receipts.
+destination: Mobility/
+policy: file-only

@@ -1,0 +1,16 @@
+[This is a synthetic fixture used only to script the README demo — not real mail.]
+
+Grundschule am Stadtpark
+Elternbrief
+
+Betreff: Klassenfahrt Klasse 5b — Anmeldung
+
+Liebe Eltern,
+
+die Klassenfahrt findet vom 14.-16. Oktober statt. Bitte senden Sie die
+unterschriebene Anmeldung bis spätestens 01.08.2026 zurück.
+
+Kosten: 145 EUR pro Kind.
+
+Mit freundlichen Grüßen
+Klassenlehrerin

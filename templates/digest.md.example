@@ -1,0 +1,25 @@
+<!--
+Sample output of a scheduled propose-mode run.
+Written to <Inbox root>/digest-<date>.md — confirm items from here directly,
+or they carry over to your next `/inbox` run.
+-->
+
+# Inbox digest — 2026-07-18
+
+**Filed automatically (3)**
+- `Finance/n26-statement-june.pdf` → Finance
+- `Finance/bolt-receipt-jul12.pdf` → Finance
+- `Mobility/bvg-ticket-jul15.pdf` → Mobility
+
+**Needs your decision (2)**
+
+| Item | Proposed category | Proposed action | Confidence |
+|---|---|---|---|
+| Letter from Eryk's school — Klassenfahrt permission | Family | Calendar entry: reply deadline **2026-08-01** | High |
+| Krankenkasse — Vorsorgeuntersuchung reminder | Health → open in `health-skill` | Task: schedule appointment | Medium |
+
+**Deadlines ahead**
+- 2026-08-01 — school trip permission slip reply due
+
+Reply to this digest or run `/inbox` to confirm, edit, or skip the items above.
+Nothing here has been scheduled or actioned yet.
