@@ -2,7 +2,7 @@
 
 [![install](https://img.shields.io/badge/install-npx%20skills%20add%20googlarz%2Fpersonal--inbox-blue)](https://skills.sh)
 [![license](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
-[![safety](https://img.shields.io/badge/mail%20access-read--only%2C%20propose--only-black)](#safety-contract)
+[![mail access](https://img.shields.io/badge/mail%20access-read--only%2C%20propose--only-black)](#safety-contract)
 [![format](https://img.shields.io/badge/categories.md-open%20format-orange)](FORMAT.md)
 
 **Email triage, paperless document filing, and scanned-mail intake — one loop, your
@@ -19,12 +19,60 @@ readable, diffable, yours.
 
 ---
 
-## See it work
+## How it flows
 
-![Inbox triage demo](demo.gif)
+```mermaid
+flowchart LR
+    drop["Drop folder"]
+    mail["Connected mail<br/>Gmail / Proton"]
+    classify{"Classify against<br/>categories.md"}
+    extract["Extract → digest<br/>+ file original"]
+    unsorted["Unsorted/"]
+    pattern{"3+ similar<br/>items?"}
+    newcat["Propose new<br/>category"]
+    triage["Triage table"]
+    file["Filed"]
+    cal["Calendar entry"]
+    task["Task"]
+    skill["Open in skill"]
+    examples["categories.md<br/>examples:"]
 
-*(Scripted with synthetic fixture data — see [`demo/README.md`](demo/README.md). The
-output format above is exactly what a real run produces.)*
+    drop --> classify
+    mail --> classify
+    classify -->|match| extract --> triage
+    classify -->|no match| unsorted --> pattern
+    pattern -->|yes| newcat -.-> triage
+    triage -->|confirm| file
+    triage -->|confirm| cal
+    triage -->|confirm| task
+    triage -->|confirm| skill
+    triage -->|recategorize| examples -. sharpens .-> classify
+```
+
+Every arrow into `file`, `cal`, `task`, and `skill` waits for your confirmation —
+nothing on the right half of this diagram happens on its own. A **scheduled** run
+walks the same path, except only high-confidence filing executes unattended;
+everything else lands in a digest file for you to confirm later. See
+[`references/triage.md`](references/triage.md) for the exact rules.
+
+## Sample run
+
+```
+$ /inbox
+
+4 items need a decision
+
+Item                     Category               Proposed action                 Conf.
+N26 statement, June      Finance                file only                       high
+Bolt receipt, Jul 12     Mobility               file only                       high
+Klassenfahrt Anmeldung   Family                 calendar: reply by 2026-08-01   high
+Krankenkasse reminder    Health → health-skill   task: schedule appt             medium
+
+Confirm all? [y/edit/skip] y
+
+✓ Filed 4 documents · ✓ 1 calendar entry created · ✓ 1 task handed to health-skill
+Nothing else pending. .inbox-state.json updated.
+```
 
 ---
 
