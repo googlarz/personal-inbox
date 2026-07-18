@@ -65,8 +65,8 @@ If `<Inbox root>/categories.md` doesn't exist, this is a first run. Follow
 
 1. Ask where the Inbox root should live. Default suggestion: a folder inside whatever
    cloud-sync storage the user already has (iCloud Drive, Proton Drive, Dropbox) —
-   local folders work too. Create `<root>/INPUTS/`, `<root>/Unsorted/`, and
-   `<root>/categories.md`.
+   local folders work too. Create `<root>/INPUTS/`, `<root>/Pending/`,
+   `<root>/Unsorted/`, and `<root>/categories.md`.
 2. Ask for a first-pass category list — name + one-line description. This is a
    draft, not final.
 3. Ask what to connect for a discovery scan: mail accounts already available as
@@ -98,7 +98,8 @@ Full mechanics in `references/triage.md`. Summary:
 1. **Files** — anything in `<Inbox root>/INPUTS/` gets extracted per
    `references/extraction.md`: original moves to `<Category>/Originals/`, a
    markdown digest is written beside its category folder, SHA-256 recorded in
-   `.inbox-state.json` so it's never reprocessed. `INPUTS/` ends every run empty —
+   `.inbox-state.json` so it's never reprocessed — a duplicate of something already
+   filed is simply removed, not re-extracted. `INPUTS/` ends every run empty —
    filed on a match, moved to `Unsorted/` otherwise.
 2. **Mail** — for each connected mail MCP, pull threads since that account's
    watermark in `.inbox-state.json`. Classify against the manifest. Only threads with
@@ -119,9 +120,11 @@ Full mechanics in `references/triage.md`. Summary:
 ## Scheduled runs (propose-mode)
 
 An unattended scheduled run (via `/schedule` or `scheduled-tasks`) follows the same
-pipeline with one hard rule: **filing is automatic for high-confidence matches — it's
-a reversible file move, logged in `.inbox-state.json`. Calendar entries, tasks, and
-skill hand-offs are never executed unattended** — they're written to
+pipeline with one hard rule: **filing is automatic only for high-confidence matches
+in a category marked `auto: true`** — it's a reversible file move, logged in
+`.inbox-state.json`. Everything else that matched a category waits in `Pending/`,
+not filed yet. **Calendar entries, tasks, and skill hand-offs are never executed
+unattended, regardless of `auto`** — they're written to
 `<Inbox root>/digest-<date>.md` for the user to confirm at their next `/inbox` run or
 directly from the digest file. See `references/triage.md#scheduled-propose-mode` for
 the confidence threshold and digest format (`templates/digest.md.example`).

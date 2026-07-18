@@ -6,10 +6,13 @@ you know the `categories.md` fields.
 ## 1. Collect
 
 - **`INPUTS/`:** list everything in `<Inbox root>/INPUTS/`. For each, compute
-  SHA-256 and check `.inbox-state.json.processed` — skip anything already digested
-  with a matching hash (see `references/extraction.md`). `INPUTS/` must end the run
-  empty: filed items move to `<Category>/Originals/` as usual, anything unmatched
-  moves to `Unsorted/` rather than being left behind — it's a staging tray, never a
+  SHA-256 and check `.inbox-state.json.processed` — a matching hash means this
+  exact file is already safely archived in some `<Category>/Originals/`, so remove
+  the duplicate from `INPUTS/` without re-extracting or re-filing it (nothing is
+  lost — the archived copy is byte-identical). `INPUTS/` must end the run empty:
+  filed items move to `<Category>/Originals/`, deferred items move to `Pending/`
+  (see Scheduled propose-mode below), confirmed duplicates are removed, and
+  anything genuinely unmatched moves to `Unsorted/` — it's a staging tray, never a
   storage location.
 - **Mail:** for each connected mail MCP with a watermark in
   `.inbox-state.json.watermarks`, pull threads since that timestamp. Only pull what
@@ -91,18 +94,31 @@ typing `/inbox`) follows steps 1–3 identically, then diverges at step 4:
 - **Filing executes automatically** for any item classified into a category with
   `auto: true` above a high-confidence threshold. This is safe because a file move
   is trivially reversible — drag it back, no data lost, no external party notified.
-- **Everything else — including every calendar entry, task, and skill hand-off,
-  regardless of category `auto` setting** — is written to
-  `<Inbox root>/digest-<date>.md` as a proposal, never executed. `auto: true` only
-  ever governs filing; it has no effect on side-effect actions. See
+- **Everything else that matched a category but isn't auto-filed** — because the
+  category isn't `auto: true`, or because it is but confidence isn't high enough —
+  moves from `INPUTS/` to `<Inbox root>/Pending/` (not filed into its category yet,
+  just held) and is written to `<Inbox root>/digest-<date>.md` as a proposal. This
+  is what keeps step 1's "`INPUTS/` must end the run empty" true even in propose
+  mode: nothing sits in `INPUTS/` waiting on a decision, it waits in `Pending/`
+  instead.
+- **Every calendar entry, task, and skill hand-off, regardless of category `auto`
+  setting** — is written to the same digest as a proposal, never executed. `auto:
+  true` only ever governs filing; it has no effect on side-effect actions. See
   `templates/digest.md.example` for the exact format.
 - Low-confidence items (below the auto-file threshold, `auto` categories included)
-  go to `Unsorted/` rather than being force-filed — a wrong guess in `Unsorted/`
-  costs nothing; a wrong guess auto-filed into the wrong category is a small trust
-  cost the skill shouldn't spend without asking.
+  go straight to `Unsorted/` rather than `Pending/` — they didn't clear a category
+  match at all, so there's no filing decision to hold open. A wrong guess in
+  `Unsorted/` costs nothing; a wrong guess auto-filed into the wrong category is a
+  small trust cost the skill shouldn't spend without asking. Note these briefly in
+  the digest too (no decision needed, just visibility — see
+  `templates/digest.md.example`), so the user isn't surprised to find something in
+  `Unsorted/` they never saw mentioned.
 - The digest is also where the user resolves everything deferred: confirming a
   proposal from the digest applies it exactly like confirming a triage-table row —
-  same execute step, same audit log, same correction-memory update.
+  move the item from `Pending/` into `<Category>/Originals/`, write its digest,
+  execute any confirmed calendar/task/skill-handoff actions, update `processed` and
+  clear it from `pending` in `.inbox-state.json`, append to the audit log, and
+  apply correction-memory the same way a live recategorization would.
 
 The threshold for "high confidence" is intentionally not a fixed number in this
 doc — treat it as: would a reasonable person be surprised this got filed here
@@ -114,12 +130,15 @@ without being asked? If yes, it's not high confidence, propose it instead.
 {
   "watermarks": { "<mail-account-id>": "2026-07-18T09:00:00Z" },
   "processed": { "<sha256>": { "category": "Finance", "digest_path": "Finance/invoice-2026-07.md" } },
+  "pending": { "<sha256>": { "proposed_category": "Warranties", "held_at": "Pending/receipt.pdf", "digest_ref": "digest-2026-07-18.md" } },
   "actions": [
     { "at": "2026-07-18T09:03:00Z", "action": "filed", "item": "invoice-2026-07.pdf", "category": "Finance" }
   ]
 }
 ```
 
-Append-only for `actions`. `watermarks` and `processed` update in place. This file is
-the only thing that makes a run idempotent — never hand-edit it unless you're
-deliberately resetting state.
+Append-only for `actions`. `watermarks` and `processed` update in place. `pending`
+holds anything currently sitting in `Pending/` awaiting digest confirmation (see
+Scheduled propose-mode above) — an entry moves from `pending` to `processed` the
+moment it's confirmed, never both at once. This file is the only thing that makes a
+run idempotent — never hand-edit it unless you're deliberately resetting state.

@@ -14,9 +14,12 @@ Ask where the Inbox root should be. Suggest, in order of preference if detected:
 2. A plain local folder if no sync storage is present or the user prefers that.
 
 Once confirmed: create `<root>/INPUTS/` (the drop zone — this is where the user puts
-files, phone scans included, since it's inside their synced folder), `<root>/Unsorted/`,
-and touch `<root>/.inbox-state.json` with an empty state
-(`{"watermarks": {}, "processed": {}}`).
+files, phone scans included, since it's inside their synced folder),
+`<root>/Pending/` (holds items a scheduled run matched but didn't auto-file — see
+`references/triage.md#scheduled-propose-mode`), `<root>/Unsorted/`, and touch
+`<root>/.inbox-state.json` with an empty state matching the full schema in
+`references/triage.md#state-file-inbox-statejson`:
+`{"watermarks": {}, "processed": {}, "pending": {}, "actions": []}`.
 
 ## Step 2 — Categories, first pass
 
@@ -55,15 +58,25 @@ extraction per `references/extraction.md`.
 
 Compare what the scan found against the user's Step 2 list:
 
-- Confirms a category they already named → note the match, move on.
+- Confirms a category they already named → note the match.
 - Finds a recurring pattern with no matching category → propose one, with a short
   description drawn from what was actually found ("I see recurring BVG tickets —
-  add a Mobility category?"), not a generic guess.
+  add a Mobility category?"), not a generic guess. Unlike the 3+ threshold that
+  gates a *live* Unsorted-accumulation proposal (`references/triage.md`), a single
+  strong example is enough to propose a category here — the user is actively
+  curating during setup, so there's no cost to surfacing it and letting them
+  reject it.
 - Nothing connected, or the scan finds nothing worth a category → fall back to
   offering `templates/categories.md.example` as an editable starting point, same as
   before — most people find it easier to delete/rename than invent from nothing.
 
-Let the user accept, edit, or reject each proposal before anything is written.
+Let the user accept, edit, or reject each proposal before anything is written. For
+every category the scan found real evidence for — including ones the user already
+named in Step 2, not just newly-proposed ones — seed its `examples:` field with
+that evidence (one line: what the item was, dated) per `FORMAT.md`. A
+freshly-created category otherwise starts classification with nothing but a
+one-line description; real evidence from setup gives it a running start instead of
+guessing cold on day one.
 
 For each category in the final list, also ask (briefly, can be inferred and
 confirmed rather than asked outright for obvious cases):
@@ -77,6 +90,14 @@ confirmed rather than asked outright for obvious cases):
   there.
 
 Write the manifest per `FORMAT.md`.
+
+If Step 3 pointed at an existing folder, its documents were only *read* for this
+proposal — none of them have been filed. Offer to bulk-import them now, using the
+categories just established: same extract → classify → confirm pipeline as a real
+`/inbox` run, just sourced from that folder instead of `INPUTS/`. This is a one-time
+import, not ongoing watching — the folder isn't touched again after this. Skip the
+offer if the user declines or the folder was never meant to be organized (e.g. they
+only pointed at it to demonstrate what their documents look like).
 
 ## Step 5 — First real run
 

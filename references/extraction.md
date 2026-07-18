@@ -5,11 +5,18 @@ again. Pay the extraction cost once, then operate on a markdown digest forever a
 
 ## Applies to
 
-PDFs, Word docs, scanned images/photos of documents, long emails, any opaque file
-where re-reading raw would be slow or lossy.
+Two tiers, since "extraction" and "needs a digest" aren't the same question:
 
-**Does not apply to:** files already in a filing-friendly format (CSV, JSON, plain
-`.md`) — these get filed as-is, no digest needed.
+- **Needs real extraction** — PDFs, Word docs, scanned images/photos of documents,
+  long emails: opaque formats where getting to plain text is the actual work.
+- **Already plain text, still gets a digest** — `.txt`, or any prose file that
+  isn't already a digest. Extraction here is trivial (the content already *is* the
+  text), but it still gets the frontmatter wrapper below — that's what carries the
+  SHA-256, category, and extraction timestamp, none of which the source format has.
+
+**Does not apply to:** structured data formats other tools consume directly — CSV,
+JSON, or a `.md` file that's already a digest. Wrapping these would break the thing
+that makes them useful, so they're filed as-is, no digest.
 
 ## Layout
 

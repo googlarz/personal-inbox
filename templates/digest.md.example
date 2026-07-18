@@ -18,6 +18,9 @@ or they carry over to your next `/inbox` run.
 | Letter from Eryk's school — Klassenfahrt permission | Family | Calendar entry: reply deadline **2026-08-01** | High |
 | Krankenkasse — Vorsorgeuntersuchung reminder | Health → open in `health-skill` | Task: schedule appointment | Medium |
 
+**Also landed in Unsorted (no confident match, nothing to decide)**
+- `gym-flyer.pdf` — didn't match any category
+
 **Deadlines ahead**
 - 2026-08-01 — school trip permission slip reply due
 

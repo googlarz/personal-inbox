@@ -53,10 +53,12 @@ them unfiled indefinitely.
 
 ## Reserved names
 
-`INPUTS` and `Unsorted` are reserved at the Inbox root — `INPUTS/` is the drop zone
-(see `references/extraction.md`), `Unsorted/` is the classification overflow above.
-Don't name a category `INPUTS` or `Unsorted`; `destination` values must not point
-inside either.
+`INPUTS`, `Pending`, and `Unsorted` are reserved at the Inbox root — `INPUTS/` is
+the drop zone (see `references/extraction.md`), `Pending/` holds items a scheduled
+run matched to a category but didn't auto-file, awaiting digest confirmation (see
+`references/triage.md#scheduled-propose-mode`), `Unsorted/` is the classification
+overflow above. Don't name a category `INPUTS`, `Pending`, or `Unsorted`;
+`destination` values must not point inside any of the three.
 
 ## Minimal example
 
