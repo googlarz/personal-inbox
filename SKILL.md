@@ -34,7 +34,8 @@ instructions — see [Safety Contract](#safety-contract) before you connect anyt
 ## What this skill does
 
 1. **Watches one folder.** Drop a scanned letter, a photographed receipt, a PDF —
-   anything — into your Inbox root. `/inbox` extracts it, classifies it, and files it.
+   anything — into `<Inbox root>/INPUTS/`. `/inbox` extracts it, classifies it, and
+   files it.
 2. **Scans connected mail** (Gmail, Proton Mail, or any connected mail MCP) since the
    last run, for whatever counts as "actionable" under your own category definitions.
 3. **Classifies everything** against a manifest *you* write in plain language — no
@@ -64,14 +65,15 @@ If `<Inbox root>/categories.md` doesn't exist, this is a first run. Follow
 
 1. Ask where the Inbox root should live. Default suggestion: a folder inside whatever
    cloud-sync storage the user already has (iCloud Drive, Proton Drive, Dropbox) —
-   local folders work too. Create `<root>/Unsorted/` and `<root>/categories.md`.
+   local folders work too. Create `<root>/INPUTS/`, `<root>/Unsorted/`, and
+   `<root>/categories.md`.
 2. Ask for categories: name + one-line description of what belongs there. Offer the
    generic starter set in `templates/categories.md.example` as a base to edit, don't
    force it. Write the manifest per `FORMAT.md`.
-3. **Stop here for the first real run.** Do not ask about mail accounts yet — run
-   `/inbox` once against the drop folder only, so the user sees it work in under a
-   minute with zero OAuth. This is deliberate: see `references/setup-interview.md`
-   for why mail setup is step 2, not step 0.
+3. **Stop here for the first real run.** Do not ask about mail accounts yet — tell
+   the user to drop a file into `<root>/INPUTS/` and run `/inbox` once, so they see
+   it work in under a minute with zero OAuth. This is deliberate: see
+   `references/setup-interview.md` for why mail setup is step 2, not step 0.
 4. Only after a successful file-only run, ask: connect mail accounts? Which ones are
    already available as connected MCPs (check the current tool list — don't ask the
    user to name MCPs you can already see). Ask about a scheduled scan (cadence, and
@@ -86,10 +88,11 @@ config — nothing personal is ever written into this skill's own directory.
 
 Full mechanics in `references/triage.md`. Summary:
 
-1. **Files** — anything loose in `<Inbox root>/` (not already in a category folder)
-   gets extracted per `references/extraction.md`: original moves to
-   `<Category>/Originals/`, a markdown digest is written beside its category folder,
-   SHA-256 recorded in `.inbox-state.json` so it's never reprocessed.
+1. **Files** — anything in `<Inbox root>/INPUTS/` gets extracted per
+   `references/extraction.md`: original moves to `<Category>/Originals/`, a
+   markdown digest is written beside its category folder, SHA-256 recorded in
+   `.inbox-state.json` so it's never reprocessed. `INPUTS/` ends every run empty —
+   filed on a match, moved to `Unsorted/` otherwise.
 2. **Mail** — for each connected mail MCP, pull threads since that account's
    watermark in `.inbox-state.json`. Classify against the manifest. Only threads with
    a keeper attachment (invoice, letter, confirmation) get saved + digested into a

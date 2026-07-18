@@ -51,6 +51,13 @@ classification threshold for anything else land there. It isn't written into
 there with a shared pattern, the skill proposes a new category rather than leaving
 them unfiled indefinitely.
 
+## Reserved names
+
+`INPUTS` and `Unsorted` are reserved at the Inbox root — `INPUTS/` is the drop zone
+(see `references/extraction.md`), `Unsorted/` is the classification overflow above.
+Don't name a category `INPUTS` or `Unsorted`; `destination` values must not point
+inside either.
+
 ## Minimal example
 
 ```markdown

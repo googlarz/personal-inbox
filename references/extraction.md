@@ -16,6 +16,7 @@ where re-reading raw would be slow or lossy.
 ```
 <Inbox root>/
 ├── categories.md
+├── INPUTS/                    # drop zone — swept empty every run
 ├── <Category>/
 │   ├── <file>.md              # digest — stays at the readable location
 │   └── Originals/

@@ -23,8 +23,10 @@ Ask where the Inbox root should be. Suggest, in order of preference if detected:
    land in the same folder.
 2. A plain local folder if no sync storage is present or the user prefers that.
 
-Once confirmed: create `<root>/Unsorted/` and touch `<root>/.inbox-state.json` with
-an empty state (`{"watermarks": {}, "processed": {}}`).
+Once confirmed: create `<root>/INPUTS/` (the drop zone — this is where the user puts
+files, phone scans included, since it's inside their synced folder), `<root>/Unsorted/`,
+and touch `<root>/.inbox-state.json` with an empty state
+(`{"watermarks": {}, "processed": {}}`).
 
 ## Step 2 — Categories
 
@@ -49,7 +51,7 @@ Write the manifest per `FORMAT.md`.
 
 ## Step 3 — First run, file-only
 
-Stop the interview here. Tell the user: drop a file into the Inbox root — anything,
+Stop the interview here. Tell the user: drop a file into `<root>/INPUTS/` — anything,
 even a test PDF — and run `/inbox` again. Do not proceed to mail setup in the same
 conversation unless they explicitly ask. The point is a working, visible result
 before any further setup burden.

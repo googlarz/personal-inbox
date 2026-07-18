@@ -23,7 +23,7 @@ readable, diffable, yours.
 
 ```mermaid
 flowchart LR
-    drop["Drop folder"]
+    drop["Inbox/INPUTS/"]
     mail["Connected mail<br/>Gmail / Proton"]
     classify{"Classify against<br/>categories.md"}
     extract["Extract → digest<br/>+ file original"]

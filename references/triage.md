@@ -5,10 +5,12 @@ you know the `categories.md` fields.
 
 ## 1. Collect
 
-- **Drop folder:** list everything in `<Inbox root>/` that isn't already inside a
-  category folder or `Unsorted/`. For each, compute SHA-256 and check
-  `.inbox-state.json.processed` — skip anything already digested with a matching
-  hash (see `references/extraction.md`).
+- **`INPUTS/`:** list everything in `<Inbox root>/INPUTS/`. For each, compute
+  SHA-256 and check `.inbox-state.json.processed` — skip anything already digested
+  with a matching hash (see `references/extraction.md`). `INPUTS/` must end the run
+  empty: filed items move to `<Category>/Originals/` as usual, anything unmatched
+  moves to `Unsorted/` rather than being left behind — it's a staging tray, never a
+  storage location.
 - **Mail:** for each connected mail MCP with a watermark in
   `.inbox-state.json.watermarks`, pull threads since that timestamp. Only pull what
   the account's connector exposes as "actionable" or unread if the connector
