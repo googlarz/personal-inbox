@@ -123,11 +123,14 @@ Or via the Claude Code plugin marketplace, or manually:
 git clone https://github.com/googlarz/personal-inbox ~/.claude/skills/inbox
 ```
 
-First run walks you through setup — where your Inbox should live, and what
-categories matter to you. **No mail account required to start**: the first thing
-`/inbox` does is triage a dropped file, with zero OAuth. Connecting mail is a
-step-2 opt-in, and works with whatever mail service you already have set up in
-Claude Code — not tied to any one provider. Full flow in
+First run walks you through setup — where your Inbox should live, a first pass at
+your categories, then a **read-only discovery scan** of whatever you choose to
+connect (mail, an existing folder, files you've already dropped in) so it can
+propose categories from what's actually there instead of a blind guess.
+**Connecting mail is always optional**: decline it and the scan just runs on your
+files instead — nothing is filed until you've confirmed the category list. Works
+with whatever mail service you already have set up in Claude Code, not tied to any
+one provider. Full flow in
 [`references/setup-interview.md`](references/setup-interview.md).
 
 ## Why not paperless-ngx / Docspell / a hosted inbox tool?

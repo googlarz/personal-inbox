@@ -67,17 +67,24 @@ If `<Inbox root>/categories.md` doesn't exist, this is a first run. Follow
    cloud-sync storage the user already has (iCloud Drive, Proton Drive, Dropbox) —
    local folders work too. Create `<root>/INPUTS/`, `<root>/Unsorted/`, and
    `<root>/categories.md`.
-2. Ask for categories: name + one-line description of what belongs there. Offer the
-   generic starter set in `templates/categories.md.example` as a base to edit, don't
-   force it. Write the manifest per `FORMAT.md`.
-3. **Stop here for the first real run.** Do not ask about mail accounts yet — tell
-   the user to drop a file into `<root>/INPUTS/` and run `/inbox` once, so they see
-   it work in under a minute with zero OAuth. This is deliberate: see
-   `references/setup-interview.md` for why mail setup is step 2, not step 0.
-4. Only after a successful file-only run, ask: connect mail accounts? Which ones are
-   already available as connected MCPs (check the current tool list — don't ask the
-   user to name MCPs you can already see). Ask about a scheduled scan (cadence, and
-   confirm propose-mode behavior per `references/triage.md`) only after that.
+2. Ask for a first-pass category list — name + one-line description. This is a
+   draft, not final.
+3. Ask what to connect for a discovery scan: mail accounts already available as
+   connected MCPs, an existing folder of documents worth sampling, or whatever's
+   already in `INPUTS/`. Connecting mail here is an offer, not a requirement — a
+   user who declines and has nothing to scan yet falls straight through to the
+   generic starter set in `templates/categories.md.example`.
+4. Run a **read-only** discovery scan over whatever was connected — no filing, no
+   permanent digests. Propose categories the scan actually found evidence for,
+   merge with the Step 2 draft, let the user confirm each one, then write the
+   manifest per `FORMAT.md`.
+5. Do the first real `/inbox` run — this is the first point anything is actually
+   filed or scheduled, now informed by real categories instead of a blind guess.
+   Ask about a scheduled scan (cadence, and confirm propose-mode behavior per
+   `references/triage.md`) only after that.
+
+Full detail, including why mail-connection stays opt-in even though it's asked
+earlier now, in `references/setup-interview.md`.
 
 Setup writes nothing outside `<Inbox root>/`. Nothing here ever needs repo-level
 config — nothing personal is ever written into this skill's own directory.

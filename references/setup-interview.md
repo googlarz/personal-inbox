@@ -3,16 +3,6 @@
 Runs once, when `<Inbox root>/categories.md` doesn't exist yet. Ask one question at a
 time — don't front-load a wall of questions.
 
-## Why mail comes second, not first
-
-The single biggest reason self-hosted document tools lose people at setup is
-infrastructure dread — OAuth scopes, server config, "what am I about to grant
-access to." The fastest way to lose someone here is to open with "connect your Gmail."
-
-Instead: get to a working result — a real file dropped, extracted, and filed — before
-asking for anything that needs a permission grant. Mail is additive once trust
-exists, not a precondition for the skill to be useful.
-
 ## Step 1 — Where does the Inbox live?
 
 Ask where the Inbox root should be. Suggest, in order of preference if detected:
@@ -28,16 +18,55 @@ files, phone scans included, since it's inside their synced folder), `<root>/Uns
 and touch `<root>/.inbox-state.json` with an empty state
 (`{"watermarks": {}, "processed": {}}`).
 
-## Step 2 — Categories
+## Step 2 — Categories, first pass
 
 Ask what categories come to mind, with a short description of what belongs in each —
-this is the whole point of the manifest, so don't rush it. Offer
-`templates/categories.md.example` as an editable starting point rather than an
-open-ended blank page; most people find it easier to delete/rename than to invent
-from nothing.
+don't rush this, but treat it as a first draft, not the final list. Step 4 will
+propose additions based on what's actually in the user's mail and files; this step
+just anchors that with the user's own instinct first.
 
-For each category, also ask (briefly, can be inferred and confirmed rather than
-asked outright for obvious cases):
+## Step 3 — Connect sources for a discovery scan
+
+Ask what to point the discovery scan at:
+
+- **Mail** — list mail MCPs *already connected* in the current session (never ask
+  the user to go set one up mid-interview). This is the one point in setup where
+  connecting mail is offered — it's still opt-in, not required: a user who declines
+  and has nothing in `INPUTS/` yet just skips straight to the generic template in
+  Step 4.
+- **An existing folder** — ask if there's a folder of documents/receipts already
+  sitting somewhere (a Downloads folder, an old "Finance" folder, whatever) worth
+  sampling. This is a one-time read for discovery, not a folder the skill starts
+  watching — `INPUTS/` remains the only ongoing drop zone (see `FORMAT.md`).
+- **Files already in `INPUTS/`** — if the user dropped something there before
+  running setup, it counts automatically, no need to ask.
+
+If nothing is connected and `INPUTS/` is empty, skip straight to Step 4's fallback
+(the generic template) — there's nothing to scan yet.
+
+## Step 4 — Discovery scan and category proposal
+
+Run a **read-only, sample-only** pass over whatever was connected in Step 3 — this
+is reconnaissance, not a real `/inbox` run: no filing, no permanent digests, no
+state written to `.inbox-state.json`. Pull a bounded sample (recent mail threads,
+files in the named folder, whatever's in `INPUTS/`) and lightly note senders,
+document types, and recurring subjects — enough to spot patterns, not full
+extraction per `references/extraction.md`.
+
+Compare what the scan found against the user's Step 2 list:
+
+- Confirms a category they already named → note the match, move on.
+- Finds a recurring pattern with no matching category → propose one, with a short
+  description drawn from what was actually found ("I see recurring BVG tickets —
+  add a Mobility category?"), not a generic guess.
+- Nothing connected, or the scan finds nothing worth a category → fall back to
+  offering `templates/categories.md.example` as an editable starting point, same as
+  before — most people find it easier to delete/rename than invent from nothing.
+
+Let the user accept, edit, or reject each proposal before anything is written.
+
+For each category in the final list, also ask (briefly, can be inferred and
+confirmed rather than asked outright for obvious cases):
 - Does a document type here usually have a deadline attached (permission slips,
   tax notices, appointment letters)? → `policy: always-check-dates`.
 - Should this ever be filed unattended on a scheduled run? → `auto: true`. Default
@@ -49,26 +78,15 @@ asked outright for obvious cases):
 
 Write the manifest per `FORMAT.md`.
 
-## Step 3 — First run, file-only
+## Step 5 — First real run
 
-Stop the interview here. Tell the user: drop a file into `<root>/INPUTS/` — anything,
-even a test PDF — and run `/inbox` again. Do not proceed to mail setup in the same
-conversation unless they explicitly ask. The point is a working, visible result
-before any further setup burden.
+Now do the first actual `/inbox` run, using the categories just established: process
+`INPUTS/`, and any mail connected in Step 3, for real this time — extract, classify,
+file, propose. This is the first moment anything is actually filed or scheduled, and
+it's informed by real categories from the start instead of a blind guess. If the
+user connected nothing in Step 3, tell them to drop a file into `INPUTS/` first.
 
-## Step 4 — Mail (only after a successful file-only run)
-
-Ask: connect mail accounts? List which mail MCPs are *already connected* in the
-current session (Gmail, Proton Mail Bridge, etc.) — never ask the user to go set one
-up mid-interview; if none are connected, say so and explain this step can happen
-later, `/inbox` works fine without it.
-
-If accounts are available, ask which to include, then set a watermark of "now" for
-each in `.inbox-state.json` (a fresh mail connection should not immediately try to
-triage years of backlog — start from the connection point, not from account
-creation).
-
-## Step 5 — Scheduled runs (optional, ask last)
+## Step 6 — Scheduled runs (optional, ask last)
 
 Ask if a recurring scan is wanted (daily is the common default) and at what time. If
 yes, set it up via the `schedule` skill / `scheduled-tasks` tooling, and explicitly

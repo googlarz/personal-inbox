@@ -39,3 +39,8 @@ policy: propose-actions
 description: Vehicle, public transit, and travel bookings and receipts.
 destination: Mobility/
 policy: file-only
+
+## Gwarancje / Warranties
+description: Product warranties, proof-of-purchase for returns, appliance and electronics documentation.
+destination: Warranties/
+policy: always-check-dates
