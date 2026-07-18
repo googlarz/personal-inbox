@@ -9,6 +9,7 @@ description: Banking, invoices, receipts, subscriptions, anything with a payment
 destination: Finance/
 policy: propose-actions
 auto: true
+skill: finance-assistant
 
 ## Tax
 description: Tax authority letters, filings, annual statements needed for tax prep.
@@ -19,6 +20,7 @@ policy: file-only
 description: Medical letters, lab results, insurance correspondence, appointment confirmations.
 destination: Health/
 policy: always-check-dates
+skill: health-skill
 
 ## Family
 description: School letters, permission slips, activities and correspondence for your kids.

@@ -20,18 +20,30 @@ won't touch mail you didn't define a category for. Only messages with a keeper
 attachment — an invoice, a letter, a confirmation — that match one of your
 categories get pulled in. Everything else is left exactly where it is.
 
-## Built for your other skills
+## Example categories
 
-Set a category's `skill:` field in `categories.md` and Inbox hands matching items
-straight to it. A couple of examples:
+`categories.md` is plain markdown you write yourself — the description is what the
+classifier matches against. A starter set to edit, not a fixed taxonomy (full file:
+[`templates/categories.md.example`](templates/categories.md.example)):
 
-| Category (yours to define) | Example hand-off |
-|---|---|
-| Finance | [finance-assistant](https://github.com/googlarz/finance-assistant) |
-| Health | [health-skill](https://github.com/googlarz/health-skill) |
+- **Finance** — Banking, invoices, receipts, subscriptions, anything with a payment
+  obligation. Wired to [finance-assistant](https://github.com/googlarz/finance-assistant)
+  via `skill: finance-assistant` in the starter file — matching items go straight to it.
+- **Health** — Medical letters, lab results, insurance correspondence, appointment
+  confirmations. Wired to [health-skill](https://github.com/googlarz/health-skill)
+  via `skill: health-skill` — matching items go straight to it.
+- **Tax** — Tax authority letters, filings, annual statements needed for tax prep.
+- **Family** — School letters, permission slips, activities and correspondence for
+  your kids.
+- **Work** — Employment paperwork, contracts, HR correspondence.
+- **Home** — Lease, utilities, building management, household insurance and
+  maintenance.
+- **Mobility** — Vehicle, public transit, and travel bookings and receipts.
+- **Gwarancje / Warranties** — Product warranties, proof-of-purchase for returns,
+  appliance and electronics documentation.
 
-These are just examples — wire up whatever skill actually reads that category's
-documents, or none at all. Inbox files and organizes on its own either way. See
+The `skill:` field is optional and works with any skill you've installed, not just
+these two — Inbox files and organizes on its own either way. Full field reference in
 [`FORMAT.md`](FORMAT.md).
 
 ---
