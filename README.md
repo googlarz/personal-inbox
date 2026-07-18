@@ -39,7 +39,7 @@ classifier matches against. A starter set to edit, not a fixed taxonomy (full fi
 - **Home** — Lease, utilities, building management, household insurance and
   maintenance.
 - **Mobility** — Vehicle, public transit, and travel bookings and receipts.
-- **Gwarancje / Warranties** — Product warranties, proof-of-purchase for returns,
+- **Warranties** — Product warranties, proof-of-purchase for returns,
   appliance and electronics documentation.
 
 The `skill:` field is optional and works with any skill you've installed, not just
