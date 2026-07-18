@@ -5,17 +5,34 @@
 [![mail access](https://img.shields.io/badge/mail%20access-read--only%2C%20propose--only-black)](#safety-contract)
 [![format](https://img.shields.io/badge/categories.md-open%20format-orange)](FORMAT.md)
 
-**Email triage, paperless document filing, and scanned-mail intake — one loop, your
-categories, nothing happens without you confirming it.**
+**A starter skill that keeps your other personal skills fed with real context.**
 
-A [Claude Code](https://claude.com/product/claude-code) skill. Drop a scanned letter
-or a receipt photo in a folder, connect Gmail or Proton Mail if you want, and run
-`/inbox`: it extracts, classifies against categories *you* define in plain English,
-files the original, writes a searchable digest, and proposes calendar entries or
-tasks for anything that needs a decision. You confirm; it executes.
+Most personal Claude Code skills — a Finance skill, a Health skill, whatever you've
+built for yourself — are only as good as the material behind them, and that
+material is usually scattered across an inbox and a stack of scanned mail. Inbox
+does the unglamorous part: it pulls out documents and messages that match
+categories *you* define, extracts them to a searchable digest, files them where
+your other skills expect to find them, and flags anything that needs a decision.
+You confirm before anything is filed or scheduled.
 
-No server. No database. No OCR pipeline to run. Plain folders and markdown files —
-readable, diffable, yours.
+**This is not an inbox-zero tool.** It doesn't triage your whole mailbox and it
+won't touch mail you didn't define a category for. Only messages with a keeper
+attachment — an invoice, a letter, a confirmation — that match one of your
+categories get pulled in. Everything else is left exactly where it is.
+
+## Built for your other skills
+
+Set a category's `skill:` field in `categories.md` and Inbox hands matching items
+straight to it. A couple of examples:
+
+| Category (yours to define) | Example hand-off |
+|---|---|
+| Finance | [finance-assistant](https://github.com/googlarz/finance-assistant) |
+| Health | [health-skill](https://github.com/googlarz/health-skill) |
+
+These are just examples — wire up whatever skill actually reads that category's
+documents, or none at all. Inbox files and organizes on its own either way. See
+[`FORMAT.md`](FORMAT.md).
 
 ---
 
@@ -24,7 +41,7 @@ readable, diffable, yours.
 ```mermaid
 flowchart LR
     drop["Inbox/INPUTS/"]
-    mail["Connected mail<br/>Gmail / Proton"]
+    mail["Connected mail<br/>(whatever's linked)"]
     classify{"Classify against<br/>categories.md"}
     extract["Extract → digest<br/>+ file original"]
     unsorted["Unsorted/"]
@@ -108,33 +125,20 @@ git clone https://github.com/googlarz/personal-inbox ~/.claude/skills/inbox
 
 First run walks you through setup — where your Inbox should live, and what
 categories matter to you. **No mail account required to start**: the first thing
-`/inbox` does is triage a dropped file, with zero OAuth. Mail is a step-2 opt-in
-once you've seen it work. Full flow in
+`/inbox` does is triage a dropped file, with zero OAuth. Connecting mail is a
+step-2 opt-in, and works with whatever mail service you already have set up in
+Claude Code — not tied to any one provider. Full flow in
 [`references/setup-interview.md`](references/setup-interview.md).
 
 ## Why not paperless-ngx / Docspell / a hosted inbox tool?
 
 Those are real, mature tools — if you want a searchable document archive with a web
-UI, [paperless-ngx](https://github.com/paperless-ngx/paperless-ngx) is excellent and
-this isn't trying to replace it. The tradeoff is a Docker/Postgres/Redis stack to
-run and maintain. Inbox is for the "I want the filed-and-searchable outcome without
-hosting anything" case — plain folders, no server, and (unlike a document archive)
-it also reads your mail and proposes the actions a document implies, not just files
-it.
-
-## Part of a suite
-
-Inbox is the intake layer for a small set of companion skills by the same author —
-each owns a domain, Inbox just gets things to the right one once you wire a category
-to it in `categories.md` (see [`FORMAT.md`](FORMAT.md)):
-
-| Skill | Domain |
-|---|---|
-| [finance-assistant](https://github.com/googlarz/finance-assistant) | budgeting, tax, invoices |
-| [health-skill](https://github.com/googlarz/health-skill) | medical records, appointments |
-| [betriebsrat](https://github.com/googlarz/betriebsrat) | German works council matters |
-
-None are required — Inbox files documents and proposes actions on its own either way.
+UI, [paperless-ngx](https://github.com/paperless-ngx/paperless-ngx) is a solid
+choice and this isn't trying to replace it. The tradeoff is a Docker/Postgres/Redis
+stack to run and maintain. Inbox is for the "get the filed-and-searchable outcome,
+and feed it to the skills I already use" case — no server to run, and (unlike a
+document archive on its own) it also reads your mail and proposes the actions a
+document implies, not just files it.
 
 ## The `categories.md` format
 
