@@ -13,7 +13,14 @@ Ask where the Inbox root should be. Suggest, in order of preference if detected:
    land in the same folder.
 2. A plain local folder if no sync storage is present or the user prefers that.
 
-Once confirmed: create `<root>/INPUTS/` (the drop zone — this is where the user puts
+Once confirmed, before anything else: write the chosen path to
+`<skill install dir>/.inbox-location` (one line, just the absolute path) — this is
+the one thing this skill ever writes outside `<Inbox root>/`, and it's a bootstrap
+pointer, not personal data. Without it, every future `/inbox` invocation in a fresh
+session would have no way to know where `<Inbox root>` even is, and would have to
+ask again from scratch. See `SKILL.md#setup-first-run` for how this gets read back.
+
+Then create `<root>/INPUTS/` (the drop zone — this is where the user puts
 files, phone scans included, since it's inside their synced folder),
 `<root>/Pending/` (holds items a scheduled run matched but didn't auto-file — see
 `references/triage.md#scheduled-propose-mode`), `<root>/Unsorted/`, and touch

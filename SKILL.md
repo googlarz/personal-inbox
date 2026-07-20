@@ -1,8 +1,9 @@
 ---
 name: inbox
 description: >
-  Personal life-admin triage: scans connected email (Gmail, Proton Mail) and a local
-  drop folder for scanned/photographed physical mail, classifies everything against
+  Personal life-admin triage: scans connected email (Gmail, Proton Mail, or any
+  other connected mail MCP) and a local drop folder for scanned/photographed
+  physical mail, classifies everything against
   your own category definitions, extracts documents to searchable markdown digests,
   files originals into category folders, and proposes calendar entries or tasks for
   anything that needs a decision — you confirm before anything is filed or scheduled.
@@ -51,22 +52,30 @@ instructions — see [Safety Contract](#safety-contract) before you connect anyt
 7. **Works with nothing connected.** No mail MCP configured? Fine — it triages the
    drop folder only. Mail is additive, not required.
 
-Companion skills this can hand off to (if installed): [finance-assistant](https://github.com/googlarz/finance-assistant),
-[health-skill](https://github.com/googlarz/health-skill), [betriebsrat](https://github.com/googlarz/betriebsrat).
-Inbox is the intake layer — it files things where they belong and lets the skill that
-owns that domain take it from there. See [Suite positioning](#part-of-a-suite).
+Companion skills this can hand off to (if installed) — for example
+[finance-assistant](https://github.com/googlarz/finance-assistant) or
+[health-skill](https://github.com/googlarz/health-skill), though `skill:` works
+with any skill you've installed, not just these two. Inbox is the intake layer —
+it files things where they belong and lets the skill that owns that domain take
+it from there. See [Suite positioning](#part-of-a-suite).
 
 ---
 
 ## Setup (first run)
 
-If `<Inbox root>/categories.md` doesn't exist, this is a first run. Follow
+First, look for `<skill install dir>/.inbox-location` — a one-line pointer file
+holding the path to `<Inbox root>` from a previous setup. Found it → read the path,
+check whether `<root>/categories.md` exists there (missing/corrupted manifest with
+a known root is a "re-run setup" case, not a fresh one — see
+`references/setup-interview.md#re-running-setup`). Not found → this is a genuine
+first run, no `<Inbox root>` has ever been chosen on this machine. Follow
 `references/setup-interview.md` in full. Short version:
 
 1. Ask where the Inbox root should live. Default suggestion: a folder inside whatever
    cloud-sync storage the user already has (iCloud Drive, Proton Drive, Dropbox) —
-   local folders work too. Create `<root>/INPUTS/`, `<root>/Pending/`,
-   `<root>/Unsorted/`, and `<root>/categories.md`.
+   local folders work too. Write the chosen path to `.inbox-location` immediately —
+   this is what step 1 above reads on every future invocation. Then create
+   `<root>/INPUTS/`, `<root>/Pending/`, `<root>/Unsorted/`, and `<root>/categories.md`.
 2. Ask for a first-pass category list — name + one-line description. This is a
    draft, not final.
 3. Ask what to connect for a discovery scan: mail accounts already available as
@@ -86,8 +95,10 @@ If `<Inbox root>/categories.md` doesn't exist, this is a first run. Follow
 Full detail, including why mail-connection stays opt-in even though it's asked
 earlier now, in `references/setup-interview.md`.
 
-Setup writes nothing outside `<Inbox root>/`. Nothing here ever needs repo-level
-config — nothing personal is ever written into this skill's own directory.
+Setup writes nothing personal outside `<Inbox root>/`. The one exception is
+`.inbox-location` in the skill's own install directory — a single-line path
+pointer, not personal data, and the only reason future invocations know where
+`<Inbox root>` is without asking again.
 
 ---
 
@@ -170,13 +181,13 @@ look at.
 Inbox is the intake layer for a small set of companion skills — each owns a domain,
 Inbox just gets things to the right one:
 
-| Category (yours to define) | Hands off to |
+| Category (yours to define) | Example hand-off |
 |---|---|
 | Finance | [finance-assistant](https://github.com/googlarz/finance-assistant) — budgeting, tax, invoices |
 | Health | [health-skill](https://github.com/googlarz/health-skill) — medical records, appointments |
-| Work / Legal (DE) | [betriebsrat](https://github.com/googlarz/betriebsrat) — works council matters |
 
-None of these are required — Inbox files documents and proposes actions on its own.
+These are just examples — wire up whatever skill actually reads that category's
+documents. None are required — Inbox files documents and proposes actions on its own.
 Installing a companion just makes the "open in `<skill>`" proposal in the triage table
 do something. Set the `skill:` field on a category in `categories.md` to wire one up
 — see `FORMAT.md`.
