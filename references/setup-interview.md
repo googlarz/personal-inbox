@@ -85,9 +85,14 @@ confirmed rather than asked outright for obvious cases):
 - Should this ever be filed unattended on a scheduled run? → `auto: true`. Default
   to `false` and explain what flipping it later means, don't push for `true` in
   the interview — that's a trust decision earned over time, not a setup default.
-- Is there a companion skill this should hand off to? Check which skills are
-  actually installed/available before asking — don't ask about a skill that isn't
-  there.
+- Is there a companion skill installed that fits this category (check what's
+  actually installed — don't ask about one that isn't there)? If so, ask directly:
+  "should Inbox call `<skill>` when something's filed here?" Not a rhetorical
+  check — a real yes/no. Answering yes sets `skill:` in `categories.md`; declining
+  leaves it unset, and the category still works, it just won't offer a hand-off.
+  Wiring a skill here doesn't make hand-offs automatic — every hand-off is still
+  proposed per item and confirmed like any other action (`references/triage.md`);
+  this question only decides which skill, if any, gets offered.
 
 Write the manifest per `FORMAT.md`.
 
