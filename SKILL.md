@@ -7,11 +7,14 @@ description: >
   your own category definitions, extracts documents to searchable markdown digests,
   files originals into category folders, and proposes calendar entries or tasks for
   anything that needs a decision — you confirm before anything is filed or scheduled.
-  Covers: email triage, inbox zero, paperless document filing, receipt and invoice
-  organization, scanned mail, GTD-style capture, and routing life admin (finance,
-  health, family, legal, home) into your other Claude Code skills. Use when the user
-  wants to triage email, file documents, process scanned mail, organize receipts, or
-  asks "what needs my attention", "check my inbox", "file this", or "run inbox".
+  Maintains a single regenerated deadline ledger (DEADLINES.md) across everything
+  ever filed. Covers: email triage, inbox zero, paperless document filing, receipt
+  and invoice organization, scanned mail, GTD-style capture, deadline tracking, and
+  routing life admin (finance, health, family, legal, home) into your other Claude
+  Code skills. Use when the user wants to triage email, file documents, process
+  scanned mail, organize receipts, track deadlines, or asks "what needs my
+  attention", "check my inbox", "file this", "what deadlines do I have", or "run
+  inbox".
 triggers:
   - /inbox
   - "check my inbox"
@@ -51,6 +54,10 @@ instructions — see [Safety Contract](#safety-contract) before you connect anyt
    remembers — the same mistake doesn't repeat.
 7. **Works with nothing connected.** No mail MCP configured? Fine — it triages the
    drop folder only. Mail is additive, not required.
+8. **Keeps one deadline ledger.** Every open date across everything ever filed —
+   `DEADLINES.md`, regenerated at the end of every run, soonest first. This is the
+   actual point of running Inbox at all: your paper life's deadlines, extracted
+   and in one place, instead of scattered across digests nobody re-reads.
 
 Companion skills this can hand off to (if installed) — for example
 [finance-assistant](https://github.com/googlarz/finance-assistant) or
@@ -127,6 +134,14 @@ Full mechanics in `references/triage.md`. Summary:
    the run ends — that's the whole learning mechanism, no separate step.
 6. **Unsorted watch** — when a pattern recurs in `Unsorted/` (3+ similar items),
    propose a new category in the same triage table, don't create it silently.
+7. **Deadline ledger** — regenerate `<Inbox root>/DEADLINES.md` from
+   `.inbox-state.json`, not appended, the whole file rebuilt every run. See
+   `references/triage.md#6-deadline-ledger` and `templates/DEADLINES.md.example`.
+
+One connector timing out or erroring never takes down the run: a source's
+watermark only advances on success, the failure gets logged, and the user is told
+plainly which sources were actually scanned — see
+`references/triage.md#partial-runs-and-source-failures`.
 
 ## Scheduled runs (propose-mode)
 
@@ -139,6 +154,12 @@ unattended, regardless of `auto`** — they're written to
 `<Inbox root>/digest-<date>.md` for the user to confirm at their next `/inbox` run or
 directly from the digest file. See `references/triage.md#scheduled-propose-mode` for
 the confidence threshold and digest format (`templates/digest.md.example`).
+
+If the user opted in during setup, the same digest also gets delivered somewhere
+they'll actually see it — a Signal note-to-self by default, via a connected
+`signal` MCP. Delivery is read-only: confirming an item still only ever happens
+through the real digest file or the next `/inbox` run. See
+`references/triage.md#digest-delivery`.
 
 ---
 
@@ -198,7 +219,8 @@ do something. Set the `skill:` field on a category in `categories.md` to wire on
 
 - `references/setup-interview.md` — first-run interview, in full
 - `references/extraction.md` — document → digest extraction protocol
-- `references/triage.md` — scan/classify/propose loop, correction memory, scheduled propose-mode, digest format
+- `references/triage.md` — scan/classify/propose loop, correction memory, scheduled propose-mode, deadline ledger, digest delivery, partial-run handling
 - `FORMAT.md` — the `categories.md` manifest spec
 - `templates/categories.md.example` — starter manifest
 - `templates/digest.md.example` — sample scheduled-run digest
+- `templates/DEADLINES.md.example` — sample deadline ledger

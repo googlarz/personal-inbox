@@ -128,6 +128,12 @@ confirm the user understands propose-mode: filing happens automatically for
 `references/triage.md#scheduled-propose-mode`. Don't enable a schedule without this
 confirmation.
 
+If a schedule is set up, also ask: deliver the digest somewhere it'll actually be
+seen, not just written to a file? Check for a connected `signal` MCP first (default
+suggestion: a note-to-self, synced to their phone) — if one isn't connected, skip
+the question rather than asking them to go set one up. See
+`references/triage.md#digest-delivery`.
+
 ## Re-running setup
 
 If the user wants to change something later, edit `categories.md` directly — it's
