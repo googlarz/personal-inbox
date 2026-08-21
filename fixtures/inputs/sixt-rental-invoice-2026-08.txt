@@ -1,0 +1,10 @@
+SIXT Rent a Car — Invoice
+
+Invoice number: SX-2026-881234
+Rental period: 2026-08-03 to 2026-08-05
+Vehicle: VW Golf
+
+Total: 189.50 EUR
+Payment method: Credit card ending 4471
+
+Thank you for renting with SIXT.

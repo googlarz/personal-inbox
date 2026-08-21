@@ -4,6 +4,12 @@ Delete what doesn't apply, rename anything, add categories of your own.
 Full field reference: FORMAT.md
 -->
 
+---
+calendar: auto
+tasks: local
+timezone: Europe/Berlin
+---
+
 ## Finance
 description: Banking, invoices, receipts, subscriptions, anything with a payment obligation.
 destination: Finance/

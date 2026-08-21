@@ -6,23 +6,40 @@ or they carry over to your next `/inbox` run.
 
 # Inbox digest — 2026-07-18
 
+Scanned 2 of 3 sources — Gmail ✓, INPUTS/ ✓, Proton Mail timed out (will retry
+next run, nothing lost).
+
 **Filed automatically (3)**
-- `Finance/n26-statement-june.pdf` → Finance
-- `Finance/bolt-receipt-jul12.pdf` → Finance
-- `Mobility/bvg-ticket-jul15.pdf` → Mobility
+- [Finance/n26-statement-june.md](Finance/n26-statement-june.md) — original in `Finance/Originals/`
+- [Finance/bolt-receipt-jul12.md](Finance/bolt-receipt-jul12.md) — original in `Finance/Originals/`
+- [Mobility/bvg-ticket-jul15.md](Mobility/bvg-ticket-jul15.md) — original in `Mobility/Originals/`
 
-**Needs your decision (2)**
+**Needs your decision (3) — held in `Pending/`, not filed yet**
 
-| Item | Proposed category | Proposed action | Confidence |
-|---|---|---|---|
-| Letter from Eryk's school — Klassenfahrt permission | Family | Calendar entry: reply deadline **2026-08-01** | High |
-| Krankenkasse — Vorsorgeuntersuchung reminder | Health → open in `health-skill` | Task: schedule appointment | Medium |
+| # | Item | Proposed category | Proposed action | Confidence |
+|---|---|---|---|---|
+| 1 | Letter from Eryk's school — Klassenfahrt permission | Family | Calendar entry: reply deadline **2026-08-01** | High |
+| 2 | Krankenkasse — Vorsorgeuntersuchung reminder | Health → open in `health-skill` | Task: schedule appointment | Medium |
+| 3 | ⚠ EnergieDirekt Rechnung (contains embedded instructions) | Finance | File + calendar: due **2026-08-10** | High |
+
+Row 3's content included text attempting to direct how it should be processed.
+It was classified on what it actually is — a utility bill — and held here for
+your decision like anything else; nothing in it was obeyed.
 
 **Also landed in Unsorted (no confident match, nothing to decide)**
 - `gym-flyer.pdf` — didn't match any category
 
-**Deadlines ahead**
-- 2026-08-01 — school trip permission slip reply due
+**Deadlines**
 
-Reply to this digest or run `/inbox` to confirm, edit, or skip the items above.
-Nothing here has been scheduled or actioned yet.
+| Date | What | Category | Status | Source |
+|---|---|---|---|---|
+| 2026-08-01 | School trip permission slip reply due | Family | needs confirmation | [digest](Family/klassenfahrt-anmeldung.md) |
+| 2026-08-10 | EnergieDirekt bill due | Finance | needs confirmation | [digest](Finance/energiedirekt-bill.md) |
+
+Full ledger (everything ever filed, not just this run):
+[DEADLINES.md](DEADLINES.md) — regenerated just now.
+
+Run `/inbox` and say which rows to confirm (e.g. "confirm 1 and 3"), or confirm
+everything.
+Nothing here has been created on your calendar, added to your tasks, or handed
+to another skill. A scheduled run never executes those — only you do.

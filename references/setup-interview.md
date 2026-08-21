@@ -23,10 +23,12 @@ ask again from scratch. See `SKILL.md#setup-first-run` for how this gets read ba
 Then create `<root>/INPUTS/` (the drop zone — this is where the user puts
 files, phone scans included, since it's inside their synced folder),
 `<root>/Pending/` (holds items a scheduled run matched but didn't auto-file — see
-`references/triage.md#scheduled-propose-mode`), `<root>/Unsorted/`, and touch
+`references/triage.md#scheduled-propose-mode`), `<root>/Unsorted/`,
+`<root>/TASKS.md` (empty ledger — same header as
+`templates/TASKS.md.example`, no rows yet), and touch
 `<root>/.inbox-state.json` with an empty state matching the full schema in
 `references/triage.md#state-file-inbox-statejson`:
-`{"watermarks": {}, "processed": {}, "pending": {}, "actions": []}`.
+`{"watermarks": {}, "processed": {}, "pending": {}, "tasks": {}, "actions": []}`.
 
 ## Step 2 — Categories, first pass
 
@@ -104,12 +106,37 @@ confirmed rather than asked outright for obvious cases):
 Write the manifest per `FORMAT.md`.
 
 If Step 3 pointed at an existing folder, its documents were only *read* for this
-proposal — none of them have been filed. Offer to bulk-import them now, using the
-categories just established: same extract → classify → confirm pipeline as a real
-`/inbox` run, just sourced from that folder instead of `INPUTS/`. This is a one-time
-import, not ongoing watching — the folder isn't touched again after this. Skip the
-offer if the user declines or the folder was never meant to be organized (e.g. they
-only pointed at it to demonstrate what their documents look like).
+proposal — none of them have been filed. Offer to run `/inbox import <folder>` now,
+using the categories just established — see `references/triage.md#import-mode`
+for the exact mechanics (copies, never moves; unmatched items are left alone, not
+dumped into `Unsorted/`). This is the same command available any time afterwards,
+not a setup-only affordance — offering it here is just the first, obvious moment
+to use it. Skip the offer if the user declines or the folder was never meant to be
+organized (e.g. they only pointed at it to demonstrate what their documents look
+like).
+
+## Step 4b — Outbound connectors
+
+Ask, one at a time, before the first real run so it can actually execute what it
+proposes:
+
+1. **"Should Inbox create calendar entries for dates you confirm?"** If yes, look
+   for a tool whose name ends in `create_event` — none found → say so, set
+   `calendar: none` in the manifest frontmatter, and don't ask the user to go
+   connect one (same rule as the mail question in Step 3). Exactly one found →
+   use it. More than one → ask which, then use its matching `list_calendars` (or
+   equivalent) to ask which calendar if it has more than one, and record both in
+   the frontmatter (`FORMAT.md#manifest-settings-frontmatter`).
+2. **"Where should confirmed tasks land?"** Default `TASKS.md` (`tasks: local`) —
+   offer `skill:<name>` only for a companion skill actually installed, never a
+   hypothetical one.
+3. **Time zone** — resolve it from the system and show it for confirmation
+   ("Europe/Berlin — right?") rather than asking blind; record it in the
+   frontmatter.
+
+If the user declined mail and files in Step 3 and has nothing to scan, this step
+can still run — connecting a calendar/task destination doesn't depend on having
+anything to file yet.
 
 ## Step 5 — First real run
 
@@ -126,7 +153,11 @@ yes, set it up via the `schedule` skill / `scheduled-tasks` tooling, and explici
 confirm the user understands propose-mode: filing happens automatically for
 `auto: true` categories, everything else lands in a digest file for review — see
 `references/triage.md#scheduled-propose-mode`. Don't enable a schedule without this
-confirmation.
+confirmation. This includes, explicitly, that a scheduled run **never** creates a
+calendar entry or a task even though a real `/inbox` run now does — every
+calendar/task proposal from a scheduled run stays a proposal until confirmed
+interactively. The user needs to hear this exact point before enabling a
+schedule, not discover it later.
 
 If a schedule is set up, also ask: deliver the digest somewhere it'll actually be
 seen, not just written to a file? Check for a connected `signal` MCP first (default

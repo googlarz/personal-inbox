@@ -1,0 +1,17 @@
+{
+  "watermarks": {},
+  "processed": {
+    "0000000000000000000000000000000000000000000000000000000000000c": {
+      "category": "Tickets",
+      "digest_path": "Tickets/already-filed-concert.md",
+      "date": "2026-10-03",
+      "date_status": "needs_confirmation"
+    }
+  },
+  "pending": {},
+  "tasks": {},
+  "actions": [
+    { "at": "2026-08-01T10:00:00Z", "action": "filed", "item": "already-filed-concert (fixture)", "category": "Tickets" },
+    { "at": "2026-08-01T10:00:00Z", "action": "calendar_proposed", "item": "already-filed-concert (fixture)", "detail": "2026-10-03, Test Venue, Berlin" }
+  ]
+}

@@ -78,7 +78,7 @@ exactly how files arrive in this Inbox.
 - **PDFs** — text-layer extraction where present; for scanned/image-only PDFs, page-by-page vision extraction. Verify page count matches PDF metadata.
 - **Photos of documents** — vision extraction, explicitly instructed to capture every word verbatim including tables and handwritten notes; note OCR confidence if illegible sections exist.
 - **Word/Office docs** — convert to markdown, then check table and image fidelity didn't degrade.
-- **Emails** — headers + body + attachment list; recurse into attachments per this same protocol.
+- **Emails** — headers + body + attachment list; recurse into attachments per this same protocol. See `references/connector-notes.md` for observed quirks of specific mail connectors.
 
 After extraction, sanity-check: non-zero word count, page count matches metadata, no
 "page 1 of N" claim with pages actually missing.

@@ -1,0 +1,12 @@
+BVG – Order Confirmation: BT2026081900001
+
+Customer ID: 35283703
+Order number: BT2026081900001
+Dear Test User,
+
+Thank you for your order from 19-08-2026.
+Ticket: 4-Fahrten-Kurzstr. Berlin, Regeltarif
+The ticket has already been created and delivered to your app.
+
+Price: 7.80 EUR
+Payment: Apple Pay
