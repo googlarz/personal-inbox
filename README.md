@@ -56,12 +56,12 @@ flowchart LR
     mail["Connected mail<br/>(whatever's linked)"]
     import["/inbox import<br/>&lt;folder&gt;"]
     classify{"Classify against<br/>categories.md"}
-    extract["Extract → digest<br/>+ file original"]
+    draft["Draft digest<br/>(preview only)"]
     unsorted["Unsorted/"]
     pattern{"3+ similar<br/>items?"}
     newcat["Propose new<br/>category"]
     triage["Triage table"]
-    file["Filed"]
+    file["Filed:<br/>original → Originals/<br/>digest written"]
     cal["Calendar entry<br/>(created if connected)"]
     task["Task → TASKS.md"]
     skill["Open in skill"]
@@ -70,7 +70,7 @@ flowchart LR
     drop --> classify
     mail --> classify
     import --> classify
-    classify -->|match| extract --> triage
+    classify -->|match| draft --> triage
     classify -->|no match| unsorted --> pattern
     pattern -->|yes| newcat -.-> triage
     triage -->|confirm| file

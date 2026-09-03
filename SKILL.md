@@ -100,8 +100,8 @@ first run, no `<Inbox root>` has ever been chosen on this machine. Follow
    cloud-sync storage the user already has (iCloud Drive, Proton Drive, Dropbox) —
    local folders work too. Write the chosen path to `.inbox-location` immediately —
    this is what step 1 above reads on every future invocation. Then create
-   `<root>/INPUTS/`, `<root>/Pending/`, `<root>/Unsorted/`, `<root>/TASKS.md`, and
-   `<root>/categories.md`.
+   `<root>/INPUTS/`, `<root>/Pending/`, `<root>/Unsorted/`, and `<root>/TASKS.md`
+   (`categories.md` comes later, once there are categories to put in it — step 4).
 2. Ask for a first-pass category list — name + one-line description. This is a
    draft, not final.
 3. Ask what to connect for a discovery scan: mail accounts already available as
@@ -111,9 +111,9 @@ first run, no `<Inbox root>` has ever been chosen on this machine. Follow
    generic starter set in `templates/categories.md.example`.
 4. Run a **read-only** discovery scan over whatever was connected — no filing, no
    permanent digests. Propose categories the scan actually found evidence for,
-   merge with the Step 2 draft, let the user confirm each one, then write the
-   manifest per `FORMAT.md`, including calendar/task/timezone settings in its
-   frontmatter.
+   merge with the Step 2 draft, let the user confirm each one, then write
+   `<root>/categories.md` per `FORMAT.md`, including calendar/task/timezone
+   settings in its frontmatter.
 5. Do the first real `/inbox` run — this is the first point anything is actually
    filed or scheduled, now informed by real categories instead of a blind guess.
    Ask about a scheduled scan (cadence, and confirm propose-mode behavior per
@@ -139,11 +139,12 @@ this run only — `.inbox-location` is not read or rewritten. This is what makes
 Full mechanics in `references/triage.md`. Summary:
 
 1. **Files** — anything in `<Inbox root>/INPUTS/` gets extracted per
-   `references/extraction.md`: original moves to `<Category>/Originals/`, a
-   markdown digest is written beside its category folder, SHA-256 recorded in
-   `.inbox-state.json` so it's never reprocessed — a duplicate of something already
-   filed is simply removed, not re-extracted. `INPUTS/` ends every run empty —
-   filed on a match, moved to `Unsorted/` otherwise.
+   `references/extraction.md` and its SHA-256 checked against
+   `.inbox-state.json` — a duplicate of something already filed is simply
+   removed, not re-extracted. The original doesn't move and no digest is
+   written to disk yet — that happens on confirmation (step 6). `INPUTS/`
+   ends every run empty regardless: filed on a match once confirmed, moved to
+   `Unsorted/` otherwise.
 2. **Mail** — for each connected mail MCP, pull threads since that account's
    watermark in `.inbox-state.json`. Classify against the manifest. Only threads with
    a keeper attachment (invoice, letter, confirmation) get saved + digested into a

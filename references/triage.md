@@ -151,7 +151,15 @@ resolution line from `references/actions.md#connector-resolution`
 version). The user needs to know this *before* they confirm, not after.
 
 The user confirms in batch, per-row, or with edits (recategorize, change the
-proposed action, skip, or — for carry-forward rows — drop). On confirmation:
+proposed action, skip, or — for carry-forward rows — drop). **Skip** on a
+fresh row means "not now" without losing the item: file it as classified (so
+`INPUTS/` still ends the run empty, per step 1) but leave every proposed
+calendar/task/skill-handoff action unconfirmed — the item then behaves like
+any other filed document with an unresolved proposal, and is carried forward
+next run exactly as step 1 describes (`needs_confirmation`, or held in
+`Pending/` if it hasn't been filed yet). Skip never means "leave it in
+`INPUTS/`" — that would break the one invariant this step exists to protect.
+On confirmation:
 
 - File the item (move original to `Originals/`, place digest, update
   `.inbox-state.json.processed`).
