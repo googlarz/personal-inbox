@@ -6,14 +6,23 @@ you know the `categories.md` fields.
 ## 1. Collect
 
 - **`INPUTS/`:** list everything in `<Inbox root>/INPUTS/`. For each, compute
-  SHA-256 and check `.inbox-state.json.processed` — a matching hash means this
-  exact file is already safely archived in some `<Category>/Originals/`, so remove
-  the duplicate from `INPUTS/` without re-extracting or re-filing it (nothing is
-  lost — the archived copy is byte-identical). `INPUTS/` must end the run empty:
-  filed items move to `<Category>/Originals/`, deferred items move to `Pending/`
-  (see Scheduled propose-mode below), confirmed duplicates are removed, and
-  anything genuinely unmatched moves to `Unsorted/` — it's a staging tray, never a
-  storage location.
+  SHA-256 and check two places, not just one: `.inbox-state.json.processed`
+  (already filed in a *previous* run) and every hash already seen *earlier in
+  this same listing* (two files dropped into `INPUTS/` together can be
+  byte-identical to each other with neither one in `processed` yet — the BVG
+  ticket duplicate fixture exercises exactly this). Either match means this
+  exact content is already accounted for: remove the duplicate from `INPUTS/`
+  without extracting or filing it a second time, and if the match was
+  same-batch rather than against `processed`, keep only the first-seen
+  filename's row in the triage table (nothing is lost — content is
+  byte-identical, so there's nothing a second row would add). `INPUTS/` must
+  end the run empty: filed items move to `<Category>/Originals/`, deferred
+  items move to `Pending/` (see Scheduled propose-mode below), duplicates
+  (either kind) are removed, and anything genuinely unmatched moves to
+  `Unsorted/` — it's a staging tray, never a storage location. Log every
+  duplicate as `duplicate_skipped` (`references/actions.md#action-log-vocabulary`)
+  — a silently-vanished file is indistinguishable from a bug from the user's
+  side, so this stays in the audit trail like everything else.
 - **Mail:** for each connected mail MCP with a watermark in
   `.inbox-state.json.watermarks`, pull threads since that timestamp. Only pull what
   the account's connector exposes as "actionable" or unread if the connector
@@ -178,15 +187,21 @@ dated example to the *chosen* category's `examples:` list in `categories.md` bef
 the run ends — not as a separate step, not something the user has to ask for. Keep
 examples terse (what the item was, one line) and cap at roughly 10 per category,
 dropping the oldest when a new one is added — the list should stay a living sample,
-not an ever-growing log.
+not an ever-growing log. Log it as `correction_recorded`
+(`references/actions.md#action-log-vocabulary`) — a `categories.md` edit is still an
+action this skill took on its own, same as filing anything else.
 
 ## 5. Unsorted watch
 
 After filing, check `Unsorted/`: if 3 or more items share a recognizable pattern
 (same sender domain, same document type, similar subject), propose a new category —
-name, description, suggested destination — as an additional row in the same triage
-table, not a separate interruption. If accepted, add it to `categories.md` and
-optionally offer to refile the matching `Unsorted/` items now.
+name, description, suggested destination. This runs after step 4, so it can't
+literally be a row in the table step 3 already built and the user already
+confirmed — it's a small follow-up prompt shown right after that batch executes,
+in the same message rather than a separate interruption later. If accepted, add
+it to `categories.md` (log `category_proposed`,
+`references/actions.md#action-log-vocabulary`) and optionally offer to refile the
+matching `Unsorted/` items now.
 
 ## 6. Deadline ledger
 

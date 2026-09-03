@@ -167,7 +167,8 @@ Full mechanics in `references/triage.md`. Summary:
    `categories.md` as examples before the run ends — that's the whole learning
    mechanism, no separate step.
 7. **Unsorted watch** — when a pattern recurs in `Unsorted/` (3+ similar items),
-   propose a new category in the same triage table, don't create it silently.
+   propose a new category right after that batch executes, don't create it
+   silently.
 8. **Ledgers** — regenerate `<Inbox root>/DEADLINES.md` and `<Inbox root>/TASKS.md`
    from `.inbox-state.json`, not appended, both fully rebuilt every run. See
    `references/triage.md#6-deadline-ledger`, `references/triage.md#7-task-ledger`,

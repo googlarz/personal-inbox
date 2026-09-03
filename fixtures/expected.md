@@ -54,12 +54,13 @@ contents.
 ### 8. `bvg-ticket-copy.txt` — byte-identical duplicate of #1
 
 - [ ] SHA-256 matches fixture #1's hash exactly (verify with `shasum -a 256` before running — both must print the same digest)
-- [ ] After #1 has been filed, dropping this file into `INPUTS/` and running again: **no** new digest written, **no** new `Mobility/Originals/` entry, removed from `INPUTS/` without a triage-table row
-- [ ] No new `.inbox-state.json.processed` entry (still exactly one entry for this content)
+- [ ] **Same-batch case** (the actual `fixtures/README.md` procedure — both files land in `INPUTS/` together in one run, `processed` starts with neither hash): only one of the two gets a digest and a `Mobility/Originals/` entry; the other is removed from `INPUTS/` without its own triage-table row, logged `duplicate_skipped` (`references/triage.md#1-collect`)
+- [ ] **Cross-run case** (optional extra check — run once with only fixture #1 present, confirm it, then drop this file in and run again): removed from `INPUTS/` without a triage-table row, logged `duplicate_skipped`
+- [ ] Either way: exactly one `.inbox-state.json.processed` entry for this content, never two
 
 ### 9. `transactions-2026-07.csv` — structured data
 
-- [ ] Filed as-is in `Finance/Originals/` (or left as `Finance/transactions-2026-07.csv` per `extraction.md`'s "does not apply to" rule)
+- [ ] Filed as-is at `Finance/transactions-2026-07.csv` — not in `Finance/Originals/`, per `extraction.md`'s "does not apply to" rule
 - [ ] **No** `.md` digest written for it — CSV is filed, not digested
 
 ### 10. `praxis-letter-garbled.txt` — partial extraction

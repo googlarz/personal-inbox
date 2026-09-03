@@ -186,9 +186,16 @@ entries — carries an external id or destination.
 | `source_scan_failed` | A mail/import source errored this run | `source`, `reason` |
 | `imported` | Item filed via `/inbox import` | `item`, `source_path` |
 | `import_skipped_duplicate` | Import found an already-filed item | `item`, `source_path` |
+| `duplicate_skipped` | `INPUTS/` had a byte-identical file — against `processed` (a prior run) or another file in the same batch | `item`, `matched` |
 | `deadline_ledger_regenerated` | `DEADLINES.md` rebuilt | `count` |
 | `tasks_ledger_regenerated` | `TASKS.md` rebuilt | `count` |
 | `digest_delivered` | Digest sent via a delivery channel | `channel` |
+| `category_proposed` | New category accepted from the Unsorted-watch proposal (`references/triage.md#5-unsorted-watch`) | `category`, `destination` |
+| `correction_recorded` | An `examples:` line appended to `categories.md` (`references/triage.md#correction-memory`) | `category`, `example` |
+
+The last two are `categories.md` writes, not file or connector actions — still
+logged, because "everything is logged" (`SKILL.md#safety-contract`) covers any
+change this skill makes on its own, not just filing and connector calls.
 
 ## Receipts
 

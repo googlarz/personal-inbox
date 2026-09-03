@@ -16,7 +16,10 @@ Two tiers, since "extraction" and "needs a digest" aren't the same question:
 
 **Does not apply to:** structured data formats other tools consume directly — CSV,
 JSON, or a `.md` file that's already a digest. Wrapping these would break the thing
-that makes them useful, so they're filed as-is, no digest.
+that makes them useful, so they're filed as-is, no digest — directly at
+`<Category>/<file>`, the same readable spot a digest would occupy (never inside
+`Originals/`, since there's no separate original-vs-digest pair for a file that
+already is both).
 
 ## Layout
 
