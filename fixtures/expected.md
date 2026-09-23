@@ -16,9 +16,9 @@ contents.
 ### 2. `home-again-festival-order.txt` — calendar-worthy
 
 - [ ] Classified as **Tickets**
-- [ ] Proposed action: calendar entry, date `2026-09-12`
+- [ ] Proposed action: calendar entry, date `2027-09-12`
 - [ ] `Tickets/home-again-festival-order.md` exists
-- [ ] `.inbox-state.json.processed` entry has `"date": "2026-09-12"`, `"date_status": "needs_confirmation"` (or `"on_calendar"` if run with `categories.calendar-on.md` and confirmed)
+- [ ] `.inbox-state.json.processed` entry has `"date": "2027-09-12"` and one of: `"date_status": "needs_confirmation"` (left unconfirmed), `"confirmed_no_calendar"` (confirmed with `categories.md`'s `calendar: none` — the default, most common path), or `"on_calendar"` (confirmed with `categories.calendar-on.md` and a connected calendar tool)
 - [ ] Appears as a row in `DEADLINES.md` after ledger regeneration
 
 ### 3. `verdi-legal-support-thread.txt` — task-worthy, undated
@@ -78,7 +78,7 @@ contents.
 ### 12. `praxis-vorsorge-appointment.txt` — Health, dated, has a `skill:` hand-off
 
 - [ ] Classified as **Health** (`always-check-dates`, `skill: health-skill`)
-- [ ] Proposed action: calendar entry, date `2026-09-22`, **and** "open in `health-skill`" offered alongside filing (never instead of it)
+- [ ] Proposed action: calendar entry, date `2027-09-22`, **and** "open in `health-skill`" offered alongside filing (never instead of it)
 - [ ] `Health/praxis-vorsorge-appointment.md` exists
 - [ ] Confirming **both** the filing and the hand-off (not just the calendar row): `handoff_invoked` is logged with `skill: "health-skill"` and the digest path — this is the first fixture that actually confirms a hand-off end to end, rather than only checking it was offered (fixture #3 only checks the offer)
 - [ ] If `health-skill` isn't installed in the environment running this pass: `handoff_failed` is logged instead, filing still happened regardless, and this is reported plainly — either outcome is a pass, silent success/failure is not

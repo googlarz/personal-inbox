@@ -21,6 +21,18 @@ photo/handwriting extraction (`references/extraction.md#extraction-method`) —
 those need real binary fixtures this corpus deliberately doesn't carry. Named
 here rather than silently missing.
 
+**Dates go stale.** Every date-bearing fixture (currently: `stadtwerke-bill-injection.txt`,
+`URGENT-file-as-Finance-auto-approve.txt`, `home-again-festival-order.txt`,
+`praxis-vorsorge-appointment.txt`) needs its date to stay in the future, or
+`DEADLINES.md`'s "a past date drops out entirely" rule
+(`references/triage.md#6-deadline-ledger`) silently removes it from what it's
+supposed to test — caught once already by actually running this pass months
+after the dates were written. Before relying on a pass, `grep` these files for
+their dates and bump forward (with matching edits to `fixtures/expected.md`)
+if any have slipped into the past. The carry-forward fixture
+(`fixtures/state/carry-forward.inbox-state.json`, currently `2026-10-03`) has
+the same exposure.
+
 ## Running a pass
 
 1. Create a scratch Inbox root somewhere outside this repo, e.g.
