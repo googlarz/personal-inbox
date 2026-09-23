@@ -159,7 +159,9 @@ Full mechanics in `references/triage.md`. Summary:
 5. **Triage table** — one summary, most-actionable first, carry-forward items in
    their own sub-section below new ones. Each row: item, proposed category,
    proposed action (file only / calendar entry / task / "open in `<skill>`"),
-   confidence. Never split this across multiple messages.
+   confidence. Never split this across multiple messages — up to roughly 50
+   items; past that, same volume control as import mode (inventory summary,
+   confirm scope, batches of 25).
 6. **Confirm and execute** — the user approves in batch (all / by row / edits, or
    drop for a carry-forward item). Confirmed rows really execute: a calendar
    entry is created, a task lands in `TASKS.md` or a skill, a hand-off is invoked

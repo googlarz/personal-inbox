@@ -75,6 +75,24 @@ contents.
 - [ ] Confirming it, with `categories.calendar-on.md` and a connected calendar tool available: `date_status` flips to `on_calendar`, a `calendar_event_id` is recorded, `calendar_created` is logged
 - [ ] Confirming it with **no** calendar connected: `date_status` becomes `confirmed_no_calendar`, `calendar_failed` is logged, and it's still listed (differently) on the next run rather than disappearing
 
+### 12. `praxis-vorsorge-appointment.txt` — Health, dated, has a `skill:` hand-off
+
+- [ ] Classified as **Health** (`always-check-dates`, `skill: health-skill`)
+- [ ] Proposed action: calendar entry, date `2026-09-22`, **and** "open in `health-skill`" offered alongside filing (never instead of it)
+- [ ] `Health/praxis-vorsorge-appointment.md` exists
+- [ ] Confirming **both** the filing and the hand-off (not just the calendar row): `handoff_invoked` is logged with `skill: "health-skill"` and the digest path — this is the first fixture that actually confirms a hand-off end to end, rather than only checking it was offered (fixture #3 only checks the offer)
+- [ ] If `health-skill` isn't installed in the environment running this pass: `handoff_failed` is logged instead, filing still happened regardless, and this is reported plainly — either outcome is a pass, silent success/failure is not
+
+### 13. Task round-trip (`fixtures/state/task-round-trip.inbox-state.json` + `TASKS.seed.md`)
+
+Exercises `references/actions.md#task-execution`'s round-trip completion logic, which nothing else in this corpus reaches (every other task fixture only tests creation).
+
+- [ ] Copy `fixtures/state/task-round-trip.inbox-state.json` in as the scratch root's `.inbox-state.json` and `fixtures/state/TASKS.seed.md` in as `TASKS.md` before running — no input files needed for this scenario, `INPUTS/` can be empty
+- [ ] The state's two open tasks (`c1a2`, `d3b4`) start with `status: open`; `TASKS.seed.md` has `c1a2` ticked `- [x]` and `d3b4`'s line deleted entirely
+- [ ] After the run: `c1a2`'s state entry is `status: done` with a `completed_at` timestamp, logged `task_completed`
+- [ ] `d3b4`'s state entry is `status: dropped`, logged `task_dropped`
+- [ ] The regenerated `TASKS.md` contains **neither** row — both left the rendered file (done and dropped tasks both disappear from the view, per the same rule as a past date leaving `DEADLINES.md`), while both entries persist in `.inbox-state.json.tasks` as the permanent record
+
 ## Global assertions
 
 Check these once per full pass, not per fixture:

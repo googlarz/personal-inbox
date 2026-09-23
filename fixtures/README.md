@@ -41,7 +41,14 @@ here rather than silently missing.
    instead of `categories.md` if you want to exercise real calendar creation
    against a connected calendar tool — otherwise expect
    `confirmed_no_calendar`, which is also a valid, checked outcome.
-7. Delete the scratch root when done. Nothing in it should ever be committed.
+7. **Task round-trip (#13)** needs its own separate scratch run, since it seeds
+   `TASKS.md` directly rather than deriving it from `INPUTS/`: a fresh scratch
+   root with just `fixtures/categories.md` as `categories.md`,
+   `fixtures/state/task-round-trip.inbox-state.json` as `.inbox-state.json`,
+   `fixtures/state/TASKS.seed.md` as `TASKS.md`, and an empty `INPUTS/` — then
+   invoke `/inbox` and check the round-trip completion happened before
+   anything else ran.
+8. Delete the scratch root when done. Nothing in it should ever be committed.
 
 Record failures against `fixtures/expected.md` directly — a failing checkbox is
 a real regression in `references/triage.md` or `references/actions.md`, not a

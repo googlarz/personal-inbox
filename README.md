@@ -246,10 +246,12 @@ one-time setup step — it's a standing command you can run any time.
 
 `categories.md`, `.inbox-state.json`, and every digest are plain files in a synced
 folder — nothing here assumes a single user. Two people pointing their own
-`/inbox` at the same shared Inbox root just works: each mail account gets its own
+`/inbox` at the same shared Inbox root works: each mail account gets its own
 watermark, so one person's Gmail and another's Proton Mail scan independently
-without stepping on each other, and both end up filing into the same shared
-categories.
+without stepping on each other, both end up filing into the same shared
+categories, and a lock file (`references/triage.md#concurrent-runs`) plus a
+merge-on-write step keep two genuinely overlapping runs from clobbering each
+other's state.
 
 ## Why not paperless-ngx / Docspell / a hosted inbox tool?
 
