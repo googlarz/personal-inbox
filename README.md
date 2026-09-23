@@ -172,9 +172,12 @@ folder. See [`templates/DEADLINES.md.example`](templates/DEADLINES.md.example),
 - **Confirm-then-execute for anything with external effect.** Nothing with
   external effect happens without your explicit confirmation — and when you
   confirm, it really happens: a calendar entry is really created, a task really
-  lands in `TASKS.md` or a skill. Filing a document is reversible — drag it back.
-  A calendar entry isn't, which is why it always waits for you, scheduled run or
-  not.
+  lands in `TASKS.md` or a skill. Filing a document is easier to undo than a
+  calendar entry — move it out of the category folder and drop its state entry
+  yourself — but not automatic: dropping the original back in `INPUTS/` doesn't
+  undo it, since duplicate detection just removes it again. A calendar entry is
+  stricter still — this skill can't undo it at all — which is why both wait for
+  you, scheduled run or not.
 - **Calendar writes are create-only.** Only ever creates events — never updates,
   deletes, or responds to one, including its own — and never adds attendees or a
   meeting link, since adding an attendee sends an invitation email and this skill

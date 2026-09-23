@@ -224,8 +224,15 @@ through the real digest file or the next `/inbox` run. See
   external effect ever happens without your explicit confirmation of that
   specific row — and when you do confirm, it really happens: a confirmed
   calendar row creates a real event, a confirmed task lands in a real file or a
-  real skill. Filing a document is reversible (drag it back); a calendar entry
-  isn't, which is why it waits for you, scheduled or not.
+  real skill. Filing a document is easier to undo than a calendar entry — move
+  it out of `<Category>/Originals/` yourself and remove its entry from
+  `.inbox-state.json.processed` (hand-editing state for a deliberate reset is
+  fine, per `references/triage.md#state-file-inbox-statejson`) — but it isn't
+  automatic: dragging the original back into `INPUTS/` does **not** undo it,
+  since SHA-256 dedup (`references/triage.md#1-collect`) just recognizes it as
+  already filed and quietly removes it again. A calendar entry is stricter
+  still — create-only, so it isn't undone by this skill at all — which is why
+  both wait for you, scheduled or not.
 - **Calendar writes are create-only.** This skill only ever calls the
   create-event operation. It never updates, deletes, or responds to an event —
   including one it created itself — and it never adds attendees or a meeting
